@@ -20,12 +20,12 @@ pub fn decoder_str(type_: CoreType) {
 
 pub fn to_pgo_cast(type_: CoreType) -> String {
   case type_ {
-    Int -> "int"
-    String -> "string"
-    Bool -> "bool"
-    UUID -> "dynamic"
-    Timestamp -> "dynamic"
-    Unknown -> "dynamic"
+    Int -> "pgo.int"
+    String -> "pgo.string"
+    Bool -> "pgo.bool"
+    UUID -> "jungle_core.pgo_panic"
+    Timestamp -> "jungle_core.pgo_panic"
+    Unknown -> "jungle_core.pgo_panic"
   }
 }
 

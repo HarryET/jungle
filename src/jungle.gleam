@@ -64,7 +64,7 @@ fn int_to_letter(int: Int) -> String {
     True -> ""
     False -> {
       let remainder = { int - 1 } % 26
-      assert Ok(codepoint) = string.utf_codepoint(remainder + 97)
+      let assert Ok(codepoint) = string.utf_codepoint(remainder + 97)
       let char = string.from_utf_codepoints([codepoint])
       let quotient = { int - 1 } / 26
       int_to_letter(quotient) <> char
@@ -104,10 +104,10 @@ type Query {
 
 fn get_table_name_from_query(query: String) -> Option(String) {
   let options = regex.Options(case_insensitive: False, multi_line: True)
-  assert Ok(re) = regex.compile("[from|FROM] ([a-zA-Z]+)", with: options)
-  assert sc = regex.scan(with: re, content: query)
-  assert Ok(m) = list.at(sc, 0)
-  assert Ok(name) = list.at(m.submatches, 0)
+  let assert Ok(re) = regex.compile("[from|FROM] ([a-zA-Z]+)", with: options)
+  let assert sc = regex.scan(with: re, content: query)
+  let assert Ok(m) = list.at(sc, 0)
+  let assert Ok(name) = list.at(m.submatches, 0)
   name
 }
 
@@ -117,18 +117,18 @@ fn parse_query_inner(
 ) -> QueryInner {
   case get_table_name_from_query(query) {
     Some(tbl) -> {
-      assert Ok(table) = map.get(tables_map, tbl)
+      let assert Ok(table) = map.get(tables_map, tbl)
       let options = regex.Options(case_insensitive: False, multi_line: True)
-      assert Ok(re) =
+      let assert Ok(re) =
         regex.compile("([a-z]+)[\\s]?[=][\\s]?(\\$[0-9]+)", with: options)
-      assert sc = regex.scan(with: re, content: query)
+      let assert sc = regex.scan(with: re, content: query)
       let params =
         list.map(
           sc,
           fn(m) {
-            assert Ok(name_opt) = list.at(m.submatches, 0)
-            assert Some(name) = name_opt
-            assert Ok(col) = map.get(table.column_map, name)
+            let assert Ok(name_opt) = list.at(m.submatches, 0)
+            let assert Some(name) = name_opt
+            let assert Ok(col) = map.get(table.column_map, name)
             Parameter(name: name, type_: col.type_)
           },
         )
@@ -221,10 +221,10 @@ fn compile(input: CommandInput) {
   let db_url = os.get_env("JUNGLE_DB")
   case db_url {
     Ok(url) -> {
-      assert Ok(flag.S(queries_path)) =
+      let assert Ok(flag.S(queries_path)) =
         flag.get(from: input.flags, for: "queries")
-      assert Ok(flag.S(schema)) = flag.get(from: input.flags, for: "schema")
-      assert Ok(flag.S(output_path)) =
+      let assert Ok(flag.S(schema)) = flag.get(from: input.flags, for: "schema")
+      let assert Ok(flag.S(output_path)) =
         flag.get(from: input.flags, for: "output")
       case file.read(queries_path) {
         Ok(queries_contents) ->
@@ -382,7 +382,7 @@ fn generate_types(
   url: String,
   schema: String,
 ) -> Result(#(List(Table), Map(String, Table)), String) {
-  assert Ok(db_config) = pgo.url_config(url)
+  let assert Ok(db_config) = pgo.url_config(url)
   let db = pgo.connect(db_config)
 
   // Get list of tables
