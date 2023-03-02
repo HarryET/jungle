@@ -1,0 +1,14 @@
+name = "jungle"
+version = "0.1.0"
+description = "A Gleam project"
+licences = ["LGPL-3.0-only"]
+repository = { type = "github", user = "HarryET", repo = "jungle" }
+
+[dependencies]
+gleam_stdlib = "~> 0.26"
+glint = "~> 0.11"
+gleam_erlang = "~> 0.18"
+gleam_pgo = "~> 0.4"
+
+[dev-dependencies]
+gleeunit = "~> 0.9"
